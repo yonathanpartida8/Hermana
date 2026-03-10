@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para mi hermana ✨ - Edición Especial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;400;600&family=Montserrat:wght@200&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ========================================
+           CONFIGURACIÓN DE VARIABLES Y RESET
+           ========================================
+        */
+        :root {
+            --pink-soft: #ffb7c5;
+            --pink-hot: #ff85a1;
+            --purple-space: #4b306a;
+            --purple-deep: #24143c;
+            --black-depth: #020202;
+            --gold-glow: #fff4d1;
+            --white-glass: rgba(255, 255, 255, 0.12);
+            --transition-smooth: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: var(--black-depth);
+            font-family: 'Quicksand', sans-serif;
+            color: #fff;
+        }
+
+        /* ========================================
+           SISTEMA DE FONDO (NEBULOSAS Y NUBES)
+           ========================================
+        */
+        #canvas-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+        }
+
+        .nebula-container {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .nebula {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.3;
+            animation: nebulaMove 30s infinite alternate ease-in-out;
+        }
+
+        @keyframes nebulaMove {
+            0% { transform: translate(-20%, -20%) scale(1); }
+            100% { transform: translate(20%, 20%) scale(1.4); }
+        }
+
+        /* Nubes PNG Flotantes */
+        .cloud-wrap {
+            position: absolute;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        .cloud-img {
+            width: 250px;
+            height: auto;
+            filter: drop-shadow(0 0 20px var(--pink-soft));
+            animation: floatCloud 25s infinite linear;
+        }
+
+        @keyframes floatCloud {
+            from { transform: translateX(-150%) rotate(0deg); }
+            to { transform: translateX(350%) rotate(10deg); }
+        }
+
+        /* ========================================
+           LLUVIA DE EMOJIS (LLAVE MÁGICA)
+           ========================================
+        */
+        .emoji-rain {
+            position: absolute;
+            top: -50px;
+            font-size: 28px;
+            pointer-events: none;
+            z-index: 1;
+            animation: fallAnimation linear forwards;
+            filter: drop-shadow(0 0 5px rgba(255,255,255,0.5));
+        }
+
+        @keyframes fallAnimation {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.8; }
+            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+        }
+
+        /* ========================================
+           INTERFAZ DEL FRASCO (MÍSTICO)
+           ========================================
+        */
+        .main-scene {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .jar-outer {
+            position: relative;
+            width: 200px;
+            height: 280px;
+            cursor: pointer;
+            z-index: 20;
+            transition: var(--transition-smooth);
+            transform-style: preserve-3d;
+        }
+
+        .jar-outer:hover {
+            transform: scale(1.05) rotateY(10deg);
+        }
+
+        /* La Tapa del Frasco */
+        .jar-cap {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90px;
+            height: 40px;
+            background: linear-gradient(to bottom, #5d4037, #3e2723);
+            border-radius: 10px 10px 5px 5px;
+            z-index: 25;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.2);
+            transition: all 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        .jar-cap::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 5%;
+            width: 90%;
+            height: 5px;
+            background: #2b1d1a;
+            border-radius: 2px;
+        }
+
+        /* Cuerpo del Frasco */
+        .jar-glass {
+            width: 100%;
+            height: 100%;
+            background: var(--white-glass);
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 20px 20px 60px 60px;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1), inset 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        /* Núcleo Brillante */
+        .jar-energy {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, var(--pink-soft) 0%, var(--purple-space) 70%);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            filter: blur(40px);
+            animation: corePulse 4s infinite alternate ease-in-out;
+        }
+
+        @keyframes corePulse {
+            0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.4; }
+            100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.9; }
+        }
+
+        /* Chispas Internas */
+        .sparkle {
+            position: absolute;
+            width: 4px; height: 4px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px #fff;
+            animation: twinkleSparkle 2s infinite ease-in-out;
+        }
+
+        @keyframes twinkleSparkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* ========================================
+           HOJA DE CARTA (PREMIUM)
+           ========================================
+        */
+        .letter-container {
+            position: absolute;
+            width: 92%;
+            height: 0;
+            background: #ffffff;
+            border-radius: 25px 25px 10px 10px;
+            box-shadow: 0 -20px 60px rgba(0,0,0,0.8);
+            opacity: 0;
+            transform: translateY(200px);
+            transition: all 1.2s cubic-bezier(0.19, 1, 0.22, 1);
+            z-index: 100;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ddd;
+        }
+
+        .letter-container.open {
+            height: 88%;
+            opacity: 1;
+            transform: translateY(0);
+            padding: 40px 25px;
+        }
+
+        .letter-header {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.6rem;
+            color: var(--purple-deep);
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .letter-header::after {
+            content: '✨';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1rem;
+        }
+
+        .letter-content {
+            flex-grow: 1;
+            overflow-y: auto;
+            color: #2c3e50;
+            line-height: 2;
+            font-size: 1.15rem;
+            text-align: left;
+            padding-right: 10px;
+            font-weight: 400;
+        }
+
+        .letter-content::-webkit-scrollbar { width: 4px; }
+        .letter-content::-webkit-scrollbar-thumb { background: var(--pink-hot); border-radius: 10px; }
+
+        /* ========================================
+           PARTÍCULAS DE MAZAPÁN (SCROLL)
+           ========================================
+        */
+        .mazapan-trail {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            pointer-events: none;
+            z-index: 1001;
+            object-fit: contain;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3));
+        }
+
+        /* ========================================
+           UI COMPLEMENTARIA
+           ========================================
+        */
+        .intro-overlay {
+            position: absolute;
+            bottom: 50px;
+            width: 85%;
+            text-align: center;
+            z-index: 5;
+            animation: fadeInOut 3s infinite ease-in-out;
+        }
+
+        .intro-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.4rem;
+            color: rgba(255,255,255,0.8);
+            text-shadow: 0 0 10px rgba(0,0,0,1);
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .btn-reload {
+            margin-top: 30px;
+            width: 100%;
+            padding: 20px;
+            border: none;
+            background: linear-gradient(45deg, var(--purple-space), var(--purple-deep));
+            color: white;
+            border-radius: 20px;
+            font-weight: 700;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
+        /* Pantalla de Flash Blanco */
+        #flash-effect {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: #fff;
+            z-index: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas-bg"></canvas>
+    <div class="nebula-container" id="nebulaBox">
+        </div>
+    <div id="flash-effect"></div>
+
+    <audio id="bgMusic" src="musica.mp3" loop></audio>
+
+    <div class="intro-overlay" id="introUI">
+        <p class="intro-text">Hermanita, Mazapanera, toca el frasco para escucharme :> 🙏🤍✨</p>
+    </div>
+
+    <div class="main-scene" id="scene">
+        <div class="jar-outer" id="magicJar">
+            <div class="jar-cap" id="jarCap"></div>
+            <div class="jar-glass">
+                <div class="jar-energy"></div>
+                <script>
+                    for(let i=0; i<15; i++) {
+                        document.write(`<div class="sparkle" style="top:${Math.random()*80+10}%; left:${Math.random()*80+10}%; animation-delay:${Math.random()*2}s"></div>`);
+                    }
+                </script>
+            </div>
+        </div>
+
+        <div class="letter-container" id="mainLetter">
+            <h1 class="letter-header">Te quiero Mazapan</h1>
+            <div class="letter-content" id="scrollContainer">
+                <p><strong>Mi mazapan...</strong></p>
+                <br>
+                <p>Primero que nada, cuida a michi, segundo que nada:</p>
+                <br>
+                <p>Oye mazapán, quería escribirte algo y ese algo es algo de los algos porque hay cosas que casi nunca digo cuando hablamos, y cuando hablamos no digo esos algos, ay tu sabes bien que en nuestra familia no somos muy de expresar sentimientos así directamente, y yo menos todavía que apenas hablo diciendo puras pendejadas, tu sabes que a mí siempre me ha dado mucha vergüenza decir estas cosas en persona o incluso cuando estamos platicando normal, y por eso a veces parece que no demuestro mucho cariño, pero no es porque no lo sienta eh y mira, primero dezliza a el dedo a la derecha y izquierda xd salen mazapanes!!! Tú xd, ay pues la verdad es que sí te quiero mucho, eres mi hermanita y te quiero más de lo que probablemente demuestro obviamente, y eres mi mazapán y siempre lo vas a ser, y hemos crecido juntos, hemos pasado muchas cosas, momentos buenos, momentos raros, momentos donde cada quien anda en su mundo, y momentos que casi no hablamos pero al final ti sigues siendo mi hermanita y pues eso es algo que para mí vale muchísimo aunque no duga muchas cosas y sé que cuando hablamos a veces no parezco muy cariñoso, y muchas veces contesto normal, serio o hasta seco, o enojado y pues si sé que puede dar la impresión de que estoy enojado o de mal humor, pero en realidad no es así eh y no es que esté molesto contigo ni nada de eso, simplemente soy así, sabes que nos cuesta mucho expresar cariño o decir cosas bonitas en el momento y nos da pena, nos ponemos medio incómodos y terminamos actuando más serio de lo que realmente siento sabe, y a veces incluso pareciera que paso enojado o que estoy distante, pero no es porque me caigas mal ni porque no quiera hablar contigo eh mazapanera, a mi me gusta cuando hablamos cerdita mazapanera y
+
+También tu sabes que en la familia damos por hecho que nos queremos, y por eso casi no lo decimos y pero aunque no lo diga seguido, quiero que sepas que sí te quiero mucho y que me importas mucho pq eres mi hermanita mazapanera y siempre vas a tener un lugar importante en mi vida eh y puede que no sea el hermano más expresivo del mundo, ni el que está diciendo todo el tiempo palabras bonitas, pero eso no significa que no sienta cariño por ti mazapanera y pero el cariño está ahí aunque no lo diga mazapan de valvula.</p>
+                <br>
+                <p>También quiero que sepas que siempre voy a estar para ti. Si algún día necesitas hablar con alguien eh y si algo te preocupa, o si estás triste o quieres platicar, o consejos o lo que sea yo aquí estoy eh y puedes contarme tus problemas o cualquier cosa que te esté pasando valvula de mazapan y no tienes que tener vergüenza conmigo ni guardarte las cosas eh, yo no voy a andar contando nada ni juzgándote y al contrario, lo que me digas se queda entre nosotros y nadie mas, y solo voy a tratar de escucharte y ayudarte en lo que pueda, como tu hermano pinshi mazapanera enserio eres mi mazapán, mi hermanita, y eso no cambia con nada de nada eh y pase lo que pase, siempre vas a contar conmigo y tal vez no soy muy bueno demostrando cariño cuando hablamos cara a cara, porque me da vergüenza o porque no estoy acostumbrado, pero eso no significa que no te quiera eeeh</p>
+                <br>
+                <p>Así que quería aprovechar para decirlo claro al menos una vez: te quiero mucho, mazapán. Aunque a veces no lo parezca, aunque a veces me vea serio o callado, o parezca que ando enojado, en realidad solo soy así de poco expresivo. Pero el cariño está ahí, y siempre va a estar eh pq soy tu hermano mazapanero..</p>
+                <br>
+                <div style="height: 400px; border-left: 2px solid var(--pink-hot); padding-left: 20px; margin: 40px 0;">
+                    <p><i>"te quiero mazapan de masa amarga con 3 toques de mazapan dulce."</i></p>
+                    <br>
+                    <p>y pues cuida a michi</p>
+                </div>
+                
+                <p style="text-align: center; font-style: italic; color: #888;">Neta que te quiero mucho, hermanita mazapanera.</p>
+                
+                <button class="btn-reload" onclick="location.reload()">CERRAR xd ✨</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ========================================
+           MOTOR DE AUDIO (WEB AUDIO API)
+           ========================================
+        */
+        const AudioFX = {
+            ctx: null,
+            init() {
+                this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+            },
+            playShimmer() {
+                if(!this.ctx) this.init();
+                const now = this.ctx.currentTime;
+                for(let i=0; i<8; i++) {
+                    const osc = this.ctx.createOscillator();
+                    const gain = this.ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(800 + (i * 250), now);
+                    osc.frequency.exponentialRampToValueAtTime(2500, now + 1.5);
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 1.5);
+                    osc.connect(gain); gain.connect(this.ctx.destination);
+                    osc.start(now + (i * 0.05)); osc.stop(now + 1.5);
+                }
+            },
+            playDeepOpen() {
+                const now = this.ctx.currentTime;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(120, now);
+                osc.frequency.exponentialRampToValueAtTime(40, now + 2);
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0, now + 2);
+                osc.connect(gain); gain.connect(this.ctx.destination);
+                osc.start(); osc.stop(now + 2);
+            }
+        };
+
+        /* ========================================
+           GENERACIÓN DE ELEMENTOS VISUALES
+           ========================================
+        */
+        const Visuals = {
+            init() {
+                this.createNebulas();
+                this.createClouds();
+            },
+            createNebulas() {
+                const box = document.getElementById('nebulaBox');
+                const colors = ['#ffb7c5', '#4b306a', '#ff85a1', '#24143c'];
+                for(let i=0; i<6; i++) {
+                    const neb = document.createElement('div');
+                    neb.className = 'nebula';
+                    neb.style.width = (Math.random()*400 + 300) + 'px';
+                    neb.style.height = neb.style.width;
+                    neb.style.background = colors[i % colors.length];
+                    neb.style.top = Math.random()*100 + '%';
+                    neb.style.left = Math.random()*100 + '%';
+                    neb.style.animationDelay = (Math.random()*10) + 's';
+                    box.appendChild(neb);
+                }
+            },
+            createClouds() {
+                for(let i=0; i<8; i++) {
+                    const wrap = document.createElement('div');
+                    wrap.className = 'cloud-wrap';
+                    wrap.style.top = (Math.random()*80 + 10) + '%';
+                    wrap.style.left = '-200px';
+                    
+                    const img = document.createElement('div');
+                    img.className = 'cloud-img';
+                    img.innerHTML = '☁️'; // Aquí puedes poner el <img> de tu nube
+                    img.style.fontSize = (Math.random()*60 + 80) + 'px';
+                    img.style.animationDelay = (Math.random()*20) + 's';
+                    img.style.animationDuration = (Math.random()*15 + 20) + 's';
+                    
+                    wrap.appendChild(img);
+                    document.body.appendChild(wrap);
+                }
+            },
+            spawnEmoji() {
+                const emojis = ['🙂', '🙃', '✨', '💜', '🌸'];
+                const e = document.createElement('div');
+                e.className = 'emoji-rain';
+                e.innerText = emojis[Math.floor(Math.random()*emojis.length)];
+                e.style.left = Math.random() * 100 + 'vw';
+                const dur = Math.random()*3 + 4;
+                e.style.animationDuration = dur + 's';
+                e.style.fontSize = (Math.random()*15 + 20) + 'px';
+                document.body.appendChild(e);
+                setTimeout(() => e.remove(), dur * 1000);
+            }
+        };
+
+        /* ========================================
+           LÓGICA DE INTERACCIÓN PRINCIPAL
+           ========================================
+        */
+        const jar = document.getElementById('magicJar');
+        const cap = document.getElementById('jarCap');
+        const letter = document.getElementById('mainLetter');
+        const flash = document.getElementById('flash-effect');
+        const music = document.getElementById('bgMusic');
+        const intro = document.getElementById('introUI');
+
+        let isOpened = false;
+
+        jar.addEventListener('click', () => {
+            if(isOpened) return;
+            isOpened = true;
+
+            // Iniciar Audio
+            AudioFX.init();
+            AudioFX.playShimmer();
+            AudioFX.playDeepOpen();
+            music.play().catch(e => console.log("Música requiere interacción previa"));
+
+            // Animación Tapa
+            cap.style.transform = 'translate(-50%, -400px) rotate(450deg) scale(0)';
+            cap.style.opacity = '0';
+
+            // Secuencia de Apertura
+            setTimeout(() => {
+                flash.style.opacity = '1';
+                setTimeout(() => {
+                    jar.style.display = 'none';
+                    intro.style.display = 'none';
+                    letter.classList.add('open');
+                    flash.style.opacity = '0';
+                    // Iniciar lluvia constante
+                    setInterval(() => Visuals.spawnEmoji(), 800);
+                }, 400);
+            }, 600);
+        });
+
+        /* ========================================
+           EFECTO DE SCROLL (PURO MAZAPÁN)
+           ========================================
+        */
+        function spawnMazapanTrail(x, y) {
+            const m = document.createElement('img');
+            m.src = 'mazapan.png';
+            m.className = 'mazapan-trail';
+            m.style.left = (x - 25) + 'px';
+            m.style.top = (y - 25) + 'px';
+            document.body.appendChild(m);
+
+            const angle = Math.random() * 360;
+            const destX = (Math.random() - 0.5) * 250;
+            const destY = -200 - Math.random() * 100;
+
+            m.animate([
+                { transform: 'translate(0,0) rotate(0deg) scale(1)', opacity: 1 },
+                { transform: `translate(${destX}px, ${destY}px) rotate(${angle}deg) scale(0)`, opacity: 0 }
+            ], {
+                duration: 2500, // +600 líneas merecen duración extendida
+                easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)'
+            }).onfinish = () => m.remove();
+        }
+
+        const scrollContainer = document.getElementById('scrollContainer');
+        
+        scrollContainer.addEventListener('touchmove', (e) => {
+            if(Math.random() > 0.7) {
+                spawnMazapanTrail(e.touches[0].clientX, e.touches[0].clientY);
+            }
+        });
+
+        scrollContainer.addEventListener('mousemove', (e) => {
+            if(isOpened && Math.random() > 0.9) {
+                spawnMazapanTrail(e.clientX, e.clientY);
+            }
+        });
+
+        // Inicializar visuales al cargar
+        window.onload = () => Visuals.init();
+
+    </script>
+</body>
+</html>
